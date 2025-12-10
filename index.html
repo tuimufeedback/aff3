@@ -3,25 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Smart Shopee Redirect</title>
+<title>Android DeepLink Bypass Pro</title>
 </head>
 <body>
+
 <script>
-    const iosUrl = "https://s.shopee.vn/805SQETqCU";  
-    const androidIntent = "intent://s.shopee.vn/805SQETqCU#Intent;scheme=https;package=com.shopee.vn;end";
+const shopeeCode = "2g3zJKPNv0";
+const iosUrl = `https://s.shopee.vn/${shopeeCode}`;
+const androidIntent = `intent://s.shopee.vn/${shopeeCode}#Intent;scheme=https;package=com.shopee.vn;end`;
+const androidWebFallback = iosUrl;
 
-    const ua = navigator.userAgent.toLowerCase();
-    const isIOS = /iphone|ipad|ipod/.test(ua);
+const ua = navigator.userAgent.toLowerCase();
+const isIOS = /iphone|ipad|ipod/.test(ua);
 
-    if (isIOS) {
-        window.location.href = iosUrl;
-    } else {
-        window.location.href = androidIntent;
+if (isIOS) {
+    window.location.href = iosUrl;
+} else {
+    const iframe = document.createElement("iframe");
+    iframe.style.display = "none";
+    iframe.src = androidIntent;
+    document.body.appendChild(iframe);
 
-        setTimeout(() => {
-            window.location.href = iosUrl;
-        }, 1200);
-    }
+    setTimeout(() => { window.location.href = androidIntent; }, 80);
+    setTimeout(() => { window.location.href = androidIntent; }, 240);
+    setTimeout(() => { window.location.href = androidWebFallback; }, 1200);
+}
+
+history.pushState({}, "", location.href);
+window.onpopstate = function() {
+    history.pushState({}, "", location.href);
+};
 </script>
+
 </body>
 </html>
